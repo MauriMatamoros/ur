@@ -9,7 +9,17 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "meteor-node-stubs": "^0.4.1"
+    "bcrypt": "^3.0.2",
+    "history": "^4.7.2",
+    "meteor-node-stubs": "^0.4.1",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-router-dom": "^4.3.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.83.0",
+    "solc": "^0.5.0",
+    "truffle-hdwallet-provider": "0.0.3",
+    "web3": "^1.0.0-beta.35"
   },
   "meteor": {
     "mainModule": {
