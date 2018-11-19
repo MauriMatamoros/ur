@@ -20,10 +20,25 @@ export default class NavBar extends React.Component {
     render() {
         return (
             <Menu>
-                <Menu.Item>Ur</Menu.Item>
-                <Menu.Item position="right">
-                    { this.state.loggedIn ? <Link to="/" onClick={() => Accounts.logout()}>Logout</Link> : <Link to="/login">Login</Link>}
-                </Menu.Item>
+                <Link to="/" className="item">
+                    Ur
+                </Link>
+                <Menu.Menu position="right">
+                    { this.state.loggedIn ? 
+                        <Link to="/cards" className="item">
+                            Cards
+                        </Link> : 
+                        null
+                    }
+                    { this.state.loggedIn ? 
+                        <Link to="/" onClick={() => Accounts.logout()} className="item">
+                            Logout
+                        </Link> : 
+                        <Link to="/login" className="item">
+                            Login
+                        </Link>
+                    }
+                </Menu.Menu>
             </Menu>
         );
     }

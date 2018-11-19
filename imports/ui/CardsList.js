@@ -9,6 +9,7 @@ import Layout from './Layout';
 
 export default class CardsList extends React.Component{
     state = {
+        isAdmin: false,
         cards: [],
         name: '',
         imageUrl: '',
@@ -50,6 +51,9 @@ export default class CardsList extends React.Component{
             Meteor.subscribe('cards');
             const cards = Cards.find({}).fetch();
             this.setState({ cards });
+            Meteor.call('users.isAdmin', (error, result) => {
+                this.setState({ isAdmin: result });
+            });
         });
     }
     componentWillUnmount() {
@@ -57,6 +61,18 @@ export default class CardsList extends React.Component{
     }
     renderCards = () => {
         return this.state.cards.map((card) => <CardRow key={card._id} {...card}/>);
+    }
+    renderTrigger = () => {
+        return (
+            this.state.isAdmin ? 
+            <Button 
+                primary 
+                onClick={this.handleOpen} 
+                floated="right">
+                Create a Card
+            </Button>
+            : null
+        );
     }
     render() {
         const { Header, Row, HeaderCell, Body } = Table;
@@ -71,6 +87,7 @@ export default class CardsList extends React.Component{
                     <HeaderCell>Class</HeaderCell>
                     <HeaderCell>Description</HeaderCell>
                     <HeaderCell>Owner</HeaderCell>
+                    <HeaderCell>In detail</HeaderCell>
                 </Row>
             </Header>
             <Body>
@@ -78,7 +95,7 @@ export default class CardsList extends React.Component{
             </Body>
         </Table>
                 <Modal 
-                    trigger={<Button primary onClick={this.handleOpen}>Create a Card</Button>}
+                    trigger={this.renderTrigger()}
                     open={this.state.modalOpen}
                     onClose={this.handleClose}
                 >
@@ -127,7 +144,7 @@ export default class CardsList extends React.Component{
                                     header="Oops!"
                                     content={this.state.errorMessage}
                                 />
-                                <Button primary>Create</Button>
+                                <Button primary fluid>Create</Button>
                             </Form>
                         </Modal.Description>
                     </Modal.Content>

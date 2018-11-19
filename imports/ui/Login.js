@@ -35,7 +35,7 @@ export default class Login extends React.Component {
             <Layout>
                 <Grid centered verticalAlign='middle'>
                     <Grid.Row>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={7}>
                             <h3>Login</h3>
                             <Form 
                                 error={!!this.state.errorMessage}
@@ -64,8 +64,8 @@ export default class Login extends React.Component {
                                         onChange={(event) => this.setState({ password: event.target.value })}
                                     />
                                 </Form.Field>
-                                <Button primary>Login</Button>
                                 <Link to="/register">Need an account?</Link>
+                                <Button primary floated="right">Login</Button>
                             </Form>
                         </Grid.Column>
                     </Grid.Row>

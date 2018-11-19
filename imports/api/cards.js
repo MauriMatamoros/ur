@@ -14,7 +14,9 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
-
+        if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized');
+        }
         Cards.insert({
             name,
             imageUrl,
@@ -22,5 +24,17 @@ Meteor.methods({
             description,
             owner: null
         });
+    },
+    async 'cards.details'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return await Cards.findOne({ _id });
+    },
+    async 'cards.buy'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return await Cards.update({ _id, owner: null }, { $set: { owner: this.userId }});
     }
 });

@@ -7,6 +7,7 @@ import Register from '../ui/Register';
 import Login from '../ui/Login';
 import HomePage from '../ui/HomePage';
 import CardsList from '../ui/CardsList';
+import CardDetails from '../ui/CardDetails';
 
 const history = createBrowserHistory();
 
@@ -32,6 +33,7 @@ export const routes = (
             <Route exact path='/login' component={Login} onEnter={publicPage}/>
             <Route exact path='/' component={HomePage} onEnter={publicPage}/>
             <Route exact path='/cards' component={CardsList} onEnter={privatePage}/>
+            <Route exact path='/cards/:id/details' component={CardDetails} onEnter={privatePage}/>
         </Switch>
     </Router>
 );

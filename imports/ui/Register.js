@@ -53,7 +53,7 @@ export default class Register extends React.Component {
             <Layout>
                 <Grid centered verticalAlign='middle'>
                     <Grid.Row>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={7}>
                             <h3>Register</h3>
                             <Form 
                                 warning={!this.state.passwordsMatch} 
@@ -120,7 +120,7 @@ export default class Register extends React.Component {
                                     value={this.state.gender}
                                     onChange={(event, data) => this.setState({ gender: data.value })}
                                 />
-                                <Button primary>Register</Button>
+                                <Button primary floated="right">Register</Button>
                             </Form>
                         </Grid.Column>
                     </Grid.Row>
