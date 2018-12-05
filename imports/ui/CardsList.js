@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Button, Form, Modal, Message, Table } from 'semantic-ui-react';
+import { Button, Form, Modal, Message, Table, Pagination, Grid } from 'semantic-ui-react';
 
 import { Cards } from '../api/cards';
 import CardRow from './CardRow';
@@ -17,10 +17,16 @@ export default class CardsList extends React.Component{
         description: '',
         modalOpen: false,
         errorMessage: '',
-        loading: false
+        loading: false,
+        activePage: 1,
+        totalPages: 0,
     }
-    handleOpen = () => this.setState({ modalOpen: true })
-    handleClose = () => this.setState({ modalOpen: false })
+    handlePaginationChange = (e, { activePage }) => { 
+        const cards = Cards.find({}, { skip: 2 * (activePage - 1), limit: 2 }).fetch();
+        this.setState({ activePage, cards }) 
+    };
+    handleOpen = () => this.setState({ modalOpen: true });
+    handleClose = () => this.setState({ modalOpen: false });
     onSubmit = async (event) => {
         event.preventDefault();
         this.setState({ 
@@ -45,14 +51,25 @@ export default class CardsList extends React.Component{
                 this.handleClose();
             }
         })
+        this.setState({
+            name: '',
+            imageUrl: '',
+            classType: '',
+            description: '',
+        });
     }
     componentDidMount() {
-        this.tracker = Tracker.autorun(() => {
+        this.tracker = Tracker.autorun( async () => {
             Meteor.subscribe('cards');
-            const cards = Cards.find({}).fetch();
+            const cards = Cards.find({}, { skip: 0, limit: 2 }).fetch();
+            const totalPages = Cards.find({}).fetch().length / 2;
             this.setState({ cards });
             Meteor.call('users.isAdmin', (error, result) => {
-                this.setState({ isAdmin: result });
+                this.setState({ 
+                    isAdmin: result,
+                    cards,
+                    totalPages
+                });
             });
         });
     }
@@ -126,7 +143,7 @@ export default class CardsList extends React.Component{
                                 <Form.Field>
                                     <label>Class</label>
                                     <input 
-                                        placeholder="Planeswalker"
+                                        placeholder="Class Type"
                                         value={this.state.classType}
                                         onChange={(event) => this.setState({ classType: event.target.value })}
                                     />
@@ -134,7 +151,7 @@ export default class CardsList extends React.Component{
                                 <Form.Field>
                                     <label>Description</label>
                                     <input 
-                                        placeholder="La carta que mato a pija a tuno"
+                                        placeholder="Description"
                                         value={this.state.description}
                                         onChange={(event) => this.setState({ description: event.target.value })}
                                     />
@@ -149,6 +166,15 @@ export default class CardsList extends React.Component{
                         </Modal.Description>
                     </Modal.Content>
                 </Modal>
+                <Grid>
+                    <Grid.Row centered>
+                        <Pagination
+                        activePage={this.state.activePage}
+                        onPageChange={this.handlePaginationChange}
+                        totalPages={this.state.totalPages}
+                        />
+                    </Grid.Row>
+                </Grid>
             </Layout>
         );
     }

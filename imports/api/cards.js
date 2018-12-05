@@ -25,6 +25,9 @@ Meteor.methods({
             owner: null
         });
     },
+    'cards.total'() {
+        return Cards.find({}).count();
+    },
     async 'cards.details'(_id) {
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');

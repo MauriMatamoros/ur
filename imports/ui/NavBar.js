@@ -25,10 +25,22 @@ export default class NavBar extends React.Component {
                 </Link>
                 <Menu.Menu position="right">
                     { this.state.loggedIn ? 
+                        <Link to="/myDecks" className="item">
+                            My Decks
+                        </Link> : 
+                        undefined
+                    }
+                    { this.state.loggedIn ? 
+                        <Link to="/myCards" className="item">
+                            My Cards
+                        </Link> : 
+                        undefined
+                    }
+                    { this.state.loggedIn ? 
                         <Link to="/cards" className="item">
                             Cards
                         </Link> : 
-                        null
+                        undefined
                     }
                     { this.state.loggedIn ? 
                         <Link to="/" onClick={() => Accounts.logout()} className="item">

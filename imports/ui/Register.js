@@ -3,6 +3,7 @@ import { Form, Button, Grid, Select, Message } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 
 import Layout from './Layout';
+import { history } from '../routes/routes';
 
 const options = [
     { key: 'm', text: 'Male', value: 'male' },
@@ -44,6 +45,7 @@ export default class Register extends React.Component {
                     }); 
                 } else {
                     this.setState({ loading: false });
+                    history.push('/login');
                 }
             });
         }

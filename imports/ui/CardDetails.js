@@ -28,11 +28,12 @@ export default class CardDetails extends React.Component {
         Meteor.call('cards.buy', this.state.card._id, (error, result) => {
             if (result === 0) {
                 this.setState({ errorMessage: 'The transaction could not go through' });
+            } else {
+                this.setState({ 
+                    successMessage: 'You bought the card!',
+                    buttonLoading: false
+                });
             }
-            this.setState({ 
-                successMessage: 'You bought the card!',
-                buttonLoading: false
-            });
         });
     }
     renderCard = () => {
