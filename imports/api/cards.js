@@ -7,6 +7,9 @@ if (Meteor.isServer) {
     Meteor.publish('cards', () => {
         return Cards.find({});
     });
+    Meteor.publish('myCards', function () {
+        return Cards.find({ owner: this.userId });
+    });
 }
 
 Meteor.methods({
