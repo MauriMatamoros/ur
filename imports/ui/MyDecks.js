@@ -10,17 +10,27 @@ export default class MyDecks extends React.Component {
     state = {
         decks: []
     }
+    componentDidMount() {
+        this.tracker = Tracker.autorun( async () => {
+            Meteor.subscribe('decks');
+            const decks = Decks.find({}).fetch();
+            this.setState({ decks });
+        });
+    }
+    componentWillUnmount() {
+        this.tracker.stop();
+    }
     render() {
         return (
             <Layout>
                 <Grid>
                     <Grid.Row>
                         <Card.Group>
-                            
+                            {this.state.decks.map((deck) => <DeckDetails key={deck._id} {...deck}/>)}
                         </Card.Group>
                     </Grid.Row>
                     <Grid.Row centered>
-                        <Button primary onClick={() => history.push("/")}>Create Deck</Button>
+                        <Button primary onClick={() => history.push("/deckCreator")}>Create Deck</Button>
                     </Grid.Row>
                 </Grid>
             </Layout>

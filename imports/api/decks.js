@@ -10,14 +10,14 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    'decks.insert'({name, cards, owner}) {
+    'decks.insert'({name, cards}) {
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
         Decks.insert({
             name,
             cards,
-            owner
+            owner: this.userId
         });
     },
     'decks.remove'(_id) {

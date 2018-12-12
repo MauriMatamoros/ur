@@ -1,24 +1,31 @@
 import React from 'react';
+import { Card, Button } from 'semantic-ui-react';
 
+import { Meteor } from 'meteor/meteor';
 
 export default class DeckDetails extends React.Component {
     render() {
+        const { _id, name, cards } = this.props;
         return (
             <Card>
                 <Card.Content>
-                    <Card.Header>Steve Sanders</Card.Header>
-                    <Card.Meta>Friends of Elliot</Card.Meta>
+                    <Card.Header>{name}</Card.Header>
+                    <Card.Meta>{_id}</Card.Meta>
                     <Card.Description>
-                    Steve wants to add you to the group <strong>best friends</strong>
+                        {cards[0].name} {cards[1] ? `${cards[1].name},` : undefined} { cards[2] ? `${cards[2].name},` : undefined} ...
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                    <Button basic color='green'>
-                        Approve
+                    <Button primary>
+                        View Details
                     </Button>
-                    <Button basic color='red'>
-                        Decline
+                    <Button 
+                        basic 
+                        primary
+                        onClick={() => Meteor.call('decks.remove', _id)}
+                    >
+                        Delete
                     </Button>
                     </div>
                 </Card.Content>
