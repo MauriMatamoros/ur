@@ -13,7 +13,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    'cards.insert'({ name, imageUrl, classType, description }) {
+    'cards.insert'({ name, imageUrl, classType, description, price }) {
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
@@ -25,6 +25,8 @@ Meteor.methods({
             imageUrl,
             classType,
             description,
+            price,
+            trade: false,
             owner: null
         });
     },
@@ -41,6 +43,16 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
-        return await Cards.update({ _id, owner: null }, { $set: { owner: this.userId }});
+        if (Cards.findOne({ _id, trade: true })) {
+            return await Cards.update({ _id, trade: true }, { $set: { owner: this.userId, trade: false }});
+        } else {
+            return await Cards.update({ _id, owner: null }, { $set: { owner: this.userId }});
+        } 
+    },
+    async 'cards.setForTrade'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return await Cards.update({ _id, owner: this.userId }, { $set: { trade: true }});
     }
 });

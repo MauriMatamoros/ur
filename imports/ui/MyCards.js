@@ -1,30 +1,74 @@
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import React from 'react';
+import { Table, Pagination, Grid } from 'semantic-ui-react';
 
-import Layout from './Layout'
 import { Cards } from '../api/cards';
+import CardRowTrade from './CardRowTrade';
+import Layout from './Layout';
 
-export default class MyCards extends React.Component {
+
+export default class MyCards extends React.Component{
     state = {
-        cards: []
+        isAdmin: false,
+        cards: [],
+        name: '',
+        imageUrl: '',
+        classType: '',
+        description: '',
+        modalOpen: false,
+        errorMessage: '',
+        loading: false,
+        activePage: 1,
+        totalPages: 0,
     }
+    handlePaginationChange = (e, { activePage }) => { 
+        const cards = Cards.find({}, { skip: 2 * (activePage - 1), limit: 2 }).fetch();
+        this.setState({ activePage, cards }) 
+    };
     componentDidMount() {
         this.tracker = Tracker.autorun( async () => {
             Meteor.subscribe('myCards');
-            const cards = Cards.find({},).fetch();
-            this.setState({ cards });
+            const cards = Cards.find({}, { skip: 0, limit: 2 }).fetch();
+            const totalPages = Cards.find({}).fetch().length / 2;
+            this.setState({ cards, totalPages });
         });
     }
     componentWillUnmount() {
         this.tracker.stop();
-    } 
+    }
+    renderCards = () => {
+        return this.state.cards.map((card) => <CardRowTrade key={card._id} {...card}/>);
+    }
     render() {
-        console.log(this.state.cards.length)
+        const { Header, Row, HeaderCell, Body } = Table;
         return (
             <Layout>
-                { this.state.cards.map((card) => <p key={card._id}>{card.name}</p>)}
-                MyCards component
+            <Table>
+            <Header>
+                <Row>
+                    <HeaderCell>ID</HeaderCell>
+                    <HeaderCell>Name</HeaderCell>
+                    <HeaderCell>Image Url</HeaderCell>
+                    <HeaderCell>Class</HeaderCell>
+                    <HeaderCell>Description</HeaderCell>
+                    <HeaderCell>Owner</HeaderCell>
+                    <HeaderCell>In detail</HeaderCell>
+                </Row>
+            </Header>
+            <Body>
+                {this.renderCards()}
+            </Body>
+        </Table>
+                <Grid>
+                    <Grid.Row centered>
+                        <Pagination
+                        activePage={this.state.activePage}
+                        onPageChange={this.handlePaginationChange}
+                        totalPages={this.state.totalPages}
+                        />
+                    </Grid.Row>
+                </Grid>
             </Layout>
         );
     }
-};
+}

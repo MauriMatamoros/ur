@@ -9,11 +9,13 @@ import HomePage from '../ui/HomePage';
 import CardsList from '../ui/CardsList';
 import CardDetails from '../ui/CardDetails';
 import MyCards from '../ui/MyCards';
+import MyDecks from '../ui/MyDecks';
+import Trade from '../ui/Trade';
 
 export const history = createBrowserHistory();
 
 const unauthenticatedPages = ['/', '/register', '/login'];
-const authenticatedPages = ['/cards', '/myDecks', '/myCards', '/card/:id/details'];
+const authenticatedPages = ['/cards', '/myDecks', '/myCards', '/card/:id/details', '/card/:id/view'];
 
 const publicPage = function  () {
     if (Meteor.userId()) {
@@ -35,7 +37,9 @@ export const routes = (
             <Route exact path='/' component={HomePage} onEnter={publicPage}/>
             <Route exact path='/cards' component={CardsList} onEnter={privatePage}/>
             <Route exact path='/myCards' component={MyCards} onEnter={privatePage}/>
+            <Route exact path='/myDecks' component={MyDecks} onEnter={privatePage}/>
             <Route exact path='/cards/:id/details' component={CardDetails} onEnter={privatePage}/>
+            <Route exact path='/cards/:id/view' component={Trade} onEnter={privatePage}/>
         </Switch>
     </Router>
 );

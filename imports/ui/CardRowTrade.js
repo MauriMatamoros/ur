@@ -2,10 +2,10 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-export default class CardRow extends React.Component {
+export default class CardRowTrade extends React.Component {
     render() {
         const { Row, Cell } = Table;
-        const { _id, name, imageUrl, classType, description, owner, trade} = this.props;
+        const { _id, name, imageUrl, classType, description, owner} = this.props;
         return (
             <Row>
                 <Cell>{_id}</Cell>
@@ -14,9 +14,8 @@ export default class CardRow extends React.Component {
                 <Cell>{classType}</Cell>
                 <Cell>{description}</Cell>
                 <Cell>{owner}</Cell>
-                <Cell>{trade || !!!owner ? "yes" : "no"}</Cell>
                 <Cell>
-                    <Link to={`/cards/${_id}/details`}>View</Link>
+                    <Link to={`/cards/${_id}/view`}>View</Link>
                 </Cell>
             </Row>
         );

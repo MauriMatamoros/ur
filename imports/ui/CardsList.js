@@ -104,6 +104,7 @@ export default class CardsList extends React.Component{
                     <HeaderCell>Class</HeaderCell>
                     <HeaderCell>Description</HeaderCell>
                     <HeaderCell>Owner</HeaderCell>
+                    <HeaderCell>For Trade</HeaderCell>
                     <HeaderCell>In detail</HeaderCell>
                 </Row>
             </Header>
