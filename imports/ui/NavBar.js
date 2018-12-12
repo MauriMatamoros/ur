@@ -25,6 +25,12 @@ export default class NavBar extends React.Component {
                 </Link>
                 <Menu.Menu position="right">
                     { this.state.loggedIn ? 
+                        <Link to="/games" className="item">
+                            Games
+                        </Link> : 
+                        undefined
+                    }
+                    { this.state.loggedIn ? 
                         <Link to="/myDecks" className="item">
                             My Decks
                         </Link> : 

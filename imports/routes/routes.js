@@ -13,11 +13,12 @@ import MyDecks from '../ui/MyDecks';
 import Trade from '../ui/Trade';
 import DeckCreator from '../ui/DeckCreator';
 import DeckDetails from '../ui/DeckDetails';
+import GamesList from '../ui/GamesList';
 
 export const history = createBrowserHistory();
 
 const unauthenticatedPages = ['/', '/register', '/login'];
-const authenticatedPages = ['/cards', '/myDecks', '/myCards', '/card/:id/details', '/card/:id/view', '/deckCreator'];
+const authenticatedPages = ['/cards', '/myDecks', '/myCards', '/card/:id/details', '/card/:id/view', '/deckCreator', '/games', '/deck/:id/details'];
 
 const publicPage = function  () {
     if (Meteor.userId()) {
@@ -44,6 +45,7 @@ export const routes = (
             <Route exact path='/cards/:id/view' component={Trade} onEnter={privatePage}/>
             <Route exact path='/deckCreator' component={DeckCreator} onEnter={privatePage}/>
             <Route exact path='/deck/:id/details' component={DeckDetails} onEnter={privatePage}/>
+            <Route exact path='/games' component={GamesList} onEnter={privatePage}/>
         </Switch>
     </Router>
 );
