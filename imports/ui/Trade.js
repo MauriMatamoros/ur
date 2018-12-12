@@ -36,6 +36,19 @@ export default class Trade extends React.Component {
             }
         });
     }
+    unTradeCard = () => {
+        this.setState({ buttonLoading: true })
+        Meteor.call('cards.cancelSetForTrade', this.state.card._id, (error, result) => {
+            if (result === 0) {
+                this.setState({ errorMessage: 'The transaction could not go through' });
+            } else {
+                this.setState({ 
+                    successMessage: 'You made the card unavailable for trade!',
+                    buttonLoading: false
+                });
+            }
+        });
+    }
     renderCard = () => {
         if (this.state.card) {
             return (
@@ -49,12 +62,14 @@ export default class Trade extends React.Component {
                         <Card.Description>{this.state.card.description}</Card.Description>
                     </Card.Content>
                     <Card.Content extra>
-                    <Button animated='vertical' fluid primary onClick={this.tradeCard} loading={this.state.buttonLoading}>
-                    <Button.Content hidden>Set for trade</Button.Content>
-                        <Button.Content visible>
-                            <Icon name='exchange'/>
-                        </Button.Content>
-                    </Button>
+                    <div className='ui two buttons'>
+                        <Button primary onClick={this.tradeCard} loading={this.state.buttonLoading}>
+                        <Button.Content>Set for trade</Button.Content>
+                        </Button>
+                        <Button basic primary onClick={this.unTradeCard} loading={this.state.buttonLoading}>
+                        <Button.Content>Remove from trade</Button.Content>
+                        </Button>
+                    </div>
                     </Card.Content>
                 </Card>
             );

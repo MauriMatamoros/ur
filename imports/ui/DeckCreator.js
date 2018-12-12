@@ -36,11 +36,17 @@ export default class DeckCreator extends React.Component {
                 <Cell>
                     <Button 
                         primary
+                        type="button"
                         onClick={() => {
+                            this.setState({ errorMessage: '' });
                             const inDeck = this.state.inDeck;
                             const card = this.state.cards.find((card) => card._id === _id);
-                            inDeck.push(card);
-                            this.setState({ inDeck })
+                            if (inDeck.find((cardInDeck) => card._id === cardInDeck._id)) {
+                                this.setState({ errorMessage: `${card.name} is already in the Deck` });
+                            } else {
+                                inDeck.push(card);
+                                this.setState({ inDeck })
+                            }
                         }}
                     >Add</Button>
                 </Cell>
@@ -58,7 +64,9 @@ export default class DeckCreator extends React.Component {
                 <Cell>
                     <Button 
                         primary
+                        type="button"
                         onClick={() => {
+                            this.setState({ errorMessage: '' });
                             const inDeck = this.state.inDeck.filter((card) => card._id !== _id);
                             this.setState({ inDeck });
                         }}
@@ -86,10 +94,12 @@ export default class DeckCreator extends React.Component {
                         loading: false,
                         errorMessage: error.message
                     });
+                } else {
+                    history.push('/myDecks');
                 }
-                history.push('/myDecks');
             });
         }
+        this.setState({ loading: false });
     }
     render() {
         const { Header, Row, HeaderCell, Body } = Table;

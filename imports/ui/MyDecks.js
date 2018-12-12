@@ -1,20 +1,24 @@
 import React from 'react';
-import { Card, Button, Grid } from 'semantic-ui-react'
+import { Card, Button, Grid, Dimmer, Loader } from 'semantic-ui-react'
 
 import Layout from './Layout';
-import DeckDetails from './DeckDetails';
+import DecksCard from './DecksCard';
 import { history } from '../routes/routes';
 import { Decks } from '../api/decks';
 
 export default class MyDecks extends React.Component {
     state = {
-        decks: []
+        decks: [],
+        loading: true
     }
     componentDidMount() {
         this.tracker = Tracker.autorun( async () => {
             Meteor.subscribe('decks');
             const decks = Decks.find({}).fetch();
-            this.setState({ decks });
+            this.setState({ 
+                decks,
+                loading: false
+            });
         });
     }
     componentWillUnmount() {
@@ -23,10 +27,13 @@ export default class MyDecks extends React.Component {
     render() {
         return (
             <Layout>
+                <Dimmer active={this.state.loading}>
+                    <Loader></Loader>
+                </Dimmer>
                 <Grid>
                     <Grid.Row>
                         <Card.Group>
-                            {this.state.decks.map((deck) => <DeckDetails key={deck._id} {...deck}/>)}
+                            {this.state.decks.map((deck) => <DecksCard key={deck._id} {...deck}/>)}
                         </Card.Group>
                     </Grid.Row>
                     <Grid.Row centered>

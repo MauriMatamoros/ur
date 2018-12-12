@@ -1,35 +1,46 @@
 import React from 'react';
-import { Card, Button } from 'semantic-ui-react';
+import { Grid, Card, Dimmer, Loader } from 'semantic-ui-react';
 
-import { Meteor } from 'meteor/meteor';
+import Layout from './Layout';
 
 export default class DeckDetails extends React.Component {
+    state = {
+        deck: {},
+        loading: true
+    }
+    componentDidMount() {
+        const { id } = this.props.match.params;
+        Meteor.call('decks.details', id, (error, result) => {
+            if (error) {
+                this.setState({ errorMessage: error.message });
+            } else {
+                this.setState({ deck: result });
+            }
+            this.setState({ loading: false });
+        });
+    }
+    renderCardNames = () => {
+        if (this.state.deck.cards) {
+            return this.state.deck.cards.map((card) => <Card.Description key={card._id}>{card.name}</Card.Description>);
+        }
+    }
     render() {
-        const { _id, name, cards } = this.props;
         return (
-            <Card>
-                <Card.Content>
-                    <Card.Header>{name}</Card.Header>
-                    <Card.Meta>{_id}</Card.Meta>
-                    <Card.Description>
-                        {cards[0].name} {cards[1] ? `${cards[1].name},` : undefined} { cards[2] ? `${cards[2].name},` : undefined} ...
-                    </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <div className='ui two buttons'>
-                    <Button primary>
-                        View Details
-                    </Button>
-                    <Button 
-                        basic 
-                        primary
-                        onClick={() => Meteor.call('decks.remove', _id)}
-                    >
-                        Delete
-                    </Button>
-                    </div>
-                </Card.Content>
-            </Card>
+            <Layout>
+                <Grid>
+                    <Dimmer active={this.state.loading}>
+                        <Loader></Loader>
+                    </Dimmer>
+                    <Grid.Row centered>
+                    <Card>
+                        <Card.Content>
+                        <Card.Header>{this.state.deck.name}</Card.Header>
+                        {this.renderCardNames()}
+                        </Card.Content>
+                    </Card>
+                    </Grid.Row>
+                </Grid>
+            </Layout>
         );
     }
-};
+}

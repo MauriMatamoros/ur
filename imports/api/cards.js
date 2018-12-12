@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import { Decks } from './decks';
+
 export const Cards = new Mongo.Collection('cards');
 
 if (Meteor.isServer) {
@@ -53,6 +55,14 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
+        const card = Cards.findOne({ _id });
+        Decks.update({}, { $pull: { cards: card } });
         return await Cards.update({ _id, owner: this.userId }, { $set: { trade: true }});
+    },
+    async 'cards.cancelSetForTrade'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return await Cards.update({ _id, owner: this.userId }, { $set: { trade: false }});
     }
 });

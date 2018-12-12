@@ -26,10 +26,16 @@ Meteor.methods({
         }
         return Decks.remove({ _id, owner: this.userId });
     },
-    'decks.remove-card'(_id) {
+    'decks.remove-card'(card) {
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
-        Decks.update({}, { $pull: { cards: _id } });
+        Decks.update({}, { $pull: { cards: card } });
+    },
+    'decks.details'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        return Decks.findOne({ _id });
     }
 });
