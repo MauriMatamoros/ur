@@ -8,3 +8,18 @@ if (Meteor.isServer) {
         return Games.find({});
     })
 }
+
+Meteor.methods({
+    'games.create'() {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        Games.insert({
+            playerOne: this.userId,
+            playerTwo: '',
+            turnOne: 0,
+            tuneTwo: 0,
+            turnThree: 0
+        });
+    }
+});
