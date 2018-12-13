@@ -3,14 +3,21 @@ pragma solidity ^0.4.17;
 contract CardFactory {
     // Anyone can create. Set server as owner
     address[] public deployedCards;
+    mapping (string => address) idToAddress;
     
-    function createCard(uint cardPrice, string cardId) public {
+    function createCard(uint cardPrice, string cardId) public returns(address) {
         address newCard = new Card(cardPrice, cardId, msg.sender);
         deployedCards.push(newCard);
+        idToAddress[cardId] = newCard;
+        return newCard;
     }
     
     function getDeployedCards() public view returns(address[]) {
         return deployedCards;
+    }
+    
+    function getCardAddress(string _id) public view returns(address) {
+        return idToAddress[_id];
     }
 }
 
