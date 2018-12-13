@@ -22,7 +22,7 @@ Meteor.methods({
         if (!Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized');
         }
-        Cards.insert({
+        const card = Cards.insert({
             name,
             imageUrl,
             classType,
@@ -31,6 +31,7 @@ Meteor.methods({
             trade: false,
             owner: null
         });
+        return card;
     },
     'cards.total'() {
         return Cards.find({}).count();
