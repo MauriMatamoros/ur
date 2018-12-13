@@ -21,8 +21,7 @@ export default class CardsList extends React.Component{
         errorMessage: '',
         loading: false,
         activePage: 1,
-        totalPages: 0,
-        _id: ''
+        totalPages: 0
     }
     handlePaginationChange = (e, { activePage }) => { 
         const cards = Cards.find({}, { skip: 2 * (activePage - 1), limit: 2 }).fetch();
@@ -43,32 +42,28 @@ export default class CardsList extends React.Component{
             classType, 
             description
         };
-        await Meteor.call('cards.insert', card, (error, res) => {
+        await Meteor.call('cards.insert', card, async (error, res) => {
             if (error) {
                 this.setState({
                     loading: false,
                     errorMessage: error.message
                 });
             } else {
-                this.setState({ 
-                    _id: res,
-                    loading: false 
-                });
+                const accounts = await web3.eth.getAccounts();
+                try {
+                    await factory.methods
+                        .createCard(1, res)
+                        .send({
+                            from: accounts[0]
+                        });
+                } catch (error) {
+                    await Meteor.call('cards.remove', res);
+                    this.setState({ errorMessage: error.message });
+                }
+                this.setState({ loading: false });
                 this.handleClose();
             }
         });
-        const accounts = await web3.eth.getAccounts();
-        try {
-            await factory.methods
-            //TODO
-                .createCard(1 )
-                .send({
-                    from: accounts[0]
-                });
-            Router.pushRoute('/');
-        } catch (error) {
-            this.setState({ errorMessage: error.message });
-        }
         this.setState({
             name: '',
             imageUrl: '',

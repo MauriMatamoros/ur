@@ -33,6 +33,18 @@ Meteor.methods({
         });
         return card;
     },
+    'cards.remove'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized');
+        }
+        Cards.remove({_id});
+    },
+    'cards.removeOwner'(_id) {
+        Cards.update({ _id }, { $set: {owner: null, trade: false }});
+    },
     'cards.total'() {
         return Cards.find({}).count();
     },
