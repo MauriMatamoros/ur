@@ -22,7 +22,7 @@ export default class MyCards extends React.Component{
         totalPages: 0,
     }
     handlePaginationChange = (e, { activePage }) => { 
-        const cards = Cards.find({}, { skip: 2 * (activePage - 1), limit: 2 }).fetch();
+        const cards = Cards.find({}, { skip: 10 * (activePage - 1), limit: 10 }).fetch();
         this.setState({ activePage, cards }) 
     };
     componentDidMount() {
