@@ -49,7 +49,7 @@ export default class Board extends React.Component {
                 <OtherHand></OtherHand>
                 <OtherPlayedCard></OtherPlayedCard>
                 <PlayedCard></PlayedCard>
-                <Hand deckId={this.props.history.location.state.deckId}></Hand>
+                <Hand gameId={this.props.match.params.id} deckId={this.props.history.location.state.deckId}></Hand>
             </Layout>
         );
     }
