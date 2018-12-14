@@ -34,7 +34,7 @@ export default class Hand extends React.Component {
     playCard(card){
         console.log(this.props.gameId, card._id);
         
-        Meteor.call('game.playCard', this.props.gameId, card._id, ()=>{})
+        Meteor.call('games.playCard', this.props.gameId, card._id, ()=>{})
     }
     renderHand(){
         if (this.state.hand) {

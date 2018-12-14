@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import { Cards } from './cards';
+
 export const Games = new Mongo.Collection('game');
 
 if (Meteor.isServer) {
@@ -20,8 +22,8 @@ Meteor.methods({
         return Games.insert({
             playerOne: this.userId,
             playerTwo: '',
-            playerOneCards:[],
-            playerTwoCards:[]
+            playerOneCards:'',
+            playerTwoCards:''
         });
     },
     'games.join'(id){
@@ -58,11 +60,35 @@ Meteor.methods({
             _id:id,
         });
         if(game.playerOne === this.userId){
-            game.playerOneCards.push(cardId);
+            return Games.update({
+                _id:id
+            },{
+                $set:{
+                    playerOneCards: Cards.findOne(cardId)
+                }
+            });
         }else{
-            game.playerTwoCards.push(cardId);
+            Games.update({
+                _id:id
+            },{
+                $set:{
+                    playerTwoCards: Cards.findOne(cardId)
+                }
+            });
         }
         Games.save(game);
+    },
+    'games.playerNum'(id){
+        const game = Games.findOne({
+            _id:id,
+        });
+        if(game.playerOne === this.userId){
+            return 1;
+        }
+        if(game.playerTwo === this.userId){
+            return 2;
+        }
+        return 0;
     },
     'games.list' () {
         return Games.find({});
