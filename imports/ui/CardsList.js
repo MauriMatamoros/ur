@@ -75,7 +75,7 @@ export default class CardsList extends React.Component{
         this.tracker = Tracker.autorun( async () => {
             Meteor.subscribe('cards');
             const cards = Cards.find({}, { skip: 0, limit: 10 }).fetch();
-            const totalPages = Cards.find({}).fetch().length / 2;
+            const totalPages = Cards.find({}).fetch().length / 10;
             this.setState({ cards });
             Meteor.call('users.isAdmin', (error, result) => {
                 this.setState({ 

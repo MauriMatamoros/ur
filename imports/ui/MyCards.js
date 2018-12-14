@@ -29,7 +29,7 @@ export default class MyCards extends React.Component{
         this.tracker = Tracker.autorun( async () => {
             Meteor.subscribe('myCards');
             const cards = Cards.find({}, { skip: 0, limit: 10 }).fetch();
-            const totalPages = Cards.find({}).fetch().length / 2;
+            const totalPages = Cards.find({}).fetch().length / 10;
             this.setState({ cards, totalPages });
         });
     }
