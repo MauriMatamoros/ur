@@ -58,7 +58,6 @@ Meteor.methods({
             _id:id,
         });
         if(game.playerOne === this.userId){
-            game.playerOneCards.push(cardId);
             return Games.update({
                 _id:id
             },{
@@ -67,11 +66,10 @@ Meteor.methods({
                 }
             });
         }else{
-            game.playerTwoCards.push(cardId);
             Games.update({
                 _id:id
             },{
-                $push:{
+                $set:{
                     playerTwoCards: cardId
                 }
             });
