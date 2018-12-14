@@ -17,15 +17,15 @@ export default class Hand extends React.Component {
             return 'Waiting players...'
         if(playerOneCard.classType === playerTwoCard.classType)
             return 'It\'s a tie';
-        if(playerOneCard.classType.toLowerCase() === 'unicorn' && playerTwoCard.classType.toLowerCase() === 'engineer')
+        if(playerOneCard.classType.toLowerCase() === 'unicorn' && playerTwoCard.classType.toLowerCase() === 'alien')
             return 'You win!!'
         if(playerOneCard.classType.toLowerCase() === 'unicorn' && playerTwoCard.classType.toLowerCase() === 'zombie')
             return 'You loose!!'
-        if(playerOneCard.classType.toLowerCase() === 'engineer' && playerTwoCard.classType.toLowerCase() === 'unicorn')
+        if(playerOneCard.classType.toLowerCase() === 'alien' && playerTwoCard.classType.toLowerCase() === 'unicorn')
             return 'You loose!!'
-        if(playerOneCard.classType.toLowerCase() === 'engineer' && playerTwoCard.classType.toLowerCase() === 'zombie')
+        if(playerOneCard.classType.toLowerCase() === 'alien' && playerTwoCard.classType.toLowerCase() === 'zombie')
             return 'You win!!'
-        if(playerOneCard.classType.toLowerCase() === 'zombie' && playerTwoCard.classType.toLowerCase() === 'engineer')
+        if(playerOneCard.classType.toLowerCase() === 'zombie' && playerTwoCard.classType.toLowerCase() === 'alien')
             return 'You loose!!'
         if(playerOneCard.classType.toLowerCase() === 'zombie' && playerTwoCard.classType.toLowerCase() === 'unicorn')
             return 'You win!!'
