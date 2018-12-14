@@ -122,7 +122,9 @@ export default class Hand extends React.Component {
         });
     }
     playCard(card){
-        // Meteor.call('game.playCard', card, ()=>{})
+        Meteor.call('game.playCard', card._id, (err, res)=>{
+            console.log(res);
+        });
     }
     renderHand(){
         if (this.state.hand) {

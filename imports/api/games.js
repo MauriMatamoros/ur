@@ -21,6 +21,58 @@ Meteor.methods({
             playerTwoCards:[]
         });
     },
+    'games.join'(id){
+        const game = Games.findOne({
+            _id:id,
+        });
+        if(game.playerOne && game.playerTwo){
+            return game;
+        }
+        if(game.playerOne === this.userId){
+            return game;
+        }
+        if(game.playerTwo === this.userId){
+            return game;
+        }
+        if(game.playerOne === ''){
+            return Games.update({_id:id},{
+                $set:{
+                    playerOne:this.userId
+                }
+            });
+        }
+        if(game.playerTwo === ''){
+            return Games.update({_id:id},{
+                $set:{
+                    playerTwo:this.userId
+                }
+            });
+        }
+        return game;
+    },
+    'games.playCard'(id, cardId){
+        const game = Games.findOne({
+            _id:id,
+        });
+        if(game.playerOne === this.userId){
+            return Games.update({
+                _id:id
+            },{
+                $push:{
+                    playerOneCards: cardId
+                }
+            });
+        }else{
+            Games.update({
+                _id:id
+            },{
+                $push:{
+                    playerOneCards: cardId
+                }
+            });
+        }
+        Games.save(game);
+    },
     'games.list' () {
         return Games.find({});
     }
