@@ -3,53 +3,60 @@ import { Grid, Card } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 export default class Hand extends React.Component {
     state = {
-        playerOneCard: {},
-        playerTwoCard: {},
+        playerNumber: 0
     }
     componentDidMount(){
-        Meteor.call('games.playerNum', (err, res)=>{
-            if(res === 1){
-                Meteor.call('')
-                this.setState({
-                    playerOneCard: this.props.playerCards[0],
-                    playerTwoCard: this.props.playerCards[1]
-                });
-            }else if(res === 2){
-                this.setState({
-                    playerOneCard: this.props.playerCards[1],
-                    playerTwoCard: this.props.playerCards[0]
-                });
-            }
+        Meteor.call('games.playerNum', this.props.gameId, (err, res)=>{
+            this.setState({
+                playerNumber: res
+            });  
         })
     }
-    getWinner(){
-        if(!this.state.playerOneCard._id || !this.state.playerTwoCard._id )
+    getWinner(playerOneCard, playerTwoCard){
+        if(!playerOneCard._id || !playerTwoCard._id )
             return 'Waiting players...'
-        if(this.state.playerOneCard.classType === this.state.playerTwoCard.classType)
+        if(playerOneCard.classType === playerTwoCard.classType)
             return 'It\'s a tie';
-        if(this.state.playerOneCard.classType.toLowerCase() === 'unicorn' && this.state.playerTwoCard.classType.toLowerCase() === 'engineer')
+        if(playerOneCard.classType.toLowerCase() === 'unicorn' && playerTwoCard.classType.toLowerCase() === 'engineer')
             return 'You win!!'
-        if(this.state.playerOneCard.classType.toLowerCase() === 'unicorn' && this.state.playerTwoCard.classType.toLowerCase() === 'zombie')
+        if(playerOneCard.classType.toLowerCase() === 'unicorn' && playerTwoCard.classType.toLowerCase() === 'zombie')
             return 'You loose!!'
-        if(this.state.playerOneCard.classType.toLowerCase() === 'engineer' && this.state.playerTwoCard.classType.toLowerCase() === 'unicorn')
+        if(playerOneCard.classType.toLowerCase() === 'engineer' && playerTwoCard.classType.toLowerCase() === 'unicorn')
             return 'You loose!!'
-        if(this.state.playerOneCard.classType.toLowerCase() === 'engineer' && this.state.playerTwoCard.classType.toLowerCase() === 'zombie')
+        if(playerOneCard.classType.toLowerCase() === 'engineer' && playerTwoCard.classType.toLowerCase() === 'zombie')
             return 'You win!!'
-        if(this.state.playerOneCard.classType.toLowerCase() === 'zombie' && this.state.playerTwoCard.classType.toLowerCase() === 'engineer')
+        if(playerOneCard.classType.toLowerCase() === 'zombie' && playerTwoCard.classType.toLowerCase() === 'engineer')
             return 'You loose!!'
-        if(this.state.playerOneCard.classType.toLowerCase() === 'zombie' && this.state.playerTwoCard.classType.toLowerCase() === 'unicorn')
+        if(playerOneCard.classType.toLowerCase() === 'zombie' && playerTwoCard.classType.toLowerCase() === 'unicorn')
             return 'You win!!'
     }
+    getPlayerCards(){
+        if(this.state.playerNumber === 1){
+            return{
+                playerOneCard: this.props.playerCards[0],
+                playerTwoCard: this.props.playerCards[1]
+            }
+        }else if(this.state.playerNumber === 2){
+            return{
+                playerOneCard: this.props.playerCards[1],
+                playerTwoCard: this.props.playerCards[0]
+            }
+        }
+        return{
+            playerOneCard: {},
+            playerTwoCard: {}
+        };
+    }
     render() {
+        const {playerOneCard, playerTwoCard} = this.getPlayerCards();
         let playerTwoState;
-        if(!this.state.playerTwoCard._id){
+        if(!playerTwoCard._id){
             playerTwoState = 'Choosing...';
-        }else if(!this.state.playerOneCard._id){
+        }else if(!playerOneCard._id){
             playerTwoState = 'Waiting for you to choose...'
         }else {
-            playerTwoState = this.state.playerTwoCard.name;
+            playerTwoState = playerTwoCard.name;
         }
-        
         return (
             <Grid>
                 <Grid.Row>
@@ -59,12 +66,12 @@ export default class Hand extends React.Component {
                 </Grid.Row>
                 <Grid.Row>
                     <Card.Description className="ur-card">
-                    {this.getWinner()}
+                    {this.getWinner(playerOneCard, playerTwoCard)}
                     </Card.Description>
                 </Grid.Row>
                 <Grid.Row>
                     <Card.Description className="ur-card">
-                    MY CARD: {this.state.playerOneCard._id?this.state.playerOneCard.name:'Choose Card...'}
+                    MY CARD: {playerOneCard._id?playerOneCard.name:'Choose Card...'}
                     </Card.Description>
                 </Grid.Row>
             </Grid>

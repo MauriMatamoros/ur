@@ -78,7 +78,7 @@ Meteor.methods({
         }
         Games.save(game);
     },
-    'games.playerNum'(){
+    'games.playerNum'(id){
         const game = Games.findOne({
             _id:id,
         });

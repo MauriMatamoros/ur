@@ -12,8 +12,8 @@ export default class Board extends React.Component {
     state = {
         playerOne: '',
         playerTwo: '',
-        playerOneCards:'',
-        playerTwoCards:''
+        playerOneCards:{},
+        playerTwoCards:{}
     }
     componentWillMount(){
         console.log(this.props);
@@ -36,8 +36,8 @@ export default class Board extends React.Component {
             this.setState({ 
                 playerOne:game.playerOne,
                 playerTwo:game.playerTwo,
-                playerOneCards:game.playerOneCards,
-                playerTwoCards:game.playerTwoCards
+                playerOneCards:game.playerOneCards || {},
+                playerTwoCards:game.playerTwoCards || {}
             });
         });
     }
@@ -45,9 +45,8 @@ export default class Board extends React.Component {
         const { playerOne, playerTwo, playerOneCards, playerTwoCards} = this.state;
         return (
             <Layout>
-                <pre>{JSON.stringify({ playerOne, playerTwo, playerOneCards, playerTwoCards},null,2)}</pre>
                 <OtherHand></OtherHand>
-                <PlayedCard playerCards={[playerOneCards, playerTwoCards]}></PlayedCard>
+                <PlayedCard gameId={this.props.match.params.id} playerCards={[playerOneCards, playerTwoCards]}></PlayedCard>
                 <Hand gameId={this.props.match.params.id} deckId={this.props.history.location.state.deckId}></Hand>
             </Layout>
         );
