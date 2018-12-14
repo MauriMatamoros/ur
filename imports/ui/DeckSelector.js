@@ -18,30 +18,40 @@ export default class DeckSelector extends React.Component {
                 decks,
                 loading: false
             });
+            if(decks.length === 0){
+                this.setState({
+                    decks: [
+                        {_id:'01', name:'Deck1'},
+                        {_id:'02', name:'Deck2'},
+                        {_id:'03', name:'Deck3'},
+                        {_id:'04', name:'Deck69'},
+                        {_id:'05', name:'Deck4'},
+                        {_id:'06', name:'Deck5'},
+                    ]
+                });
+            }
         });
     }
     componentWillUnmount() {
         this.tracker.stop();
     }
     chooseDeck(deckId) {
-        console.log(deckId);
-        history.push(`/game/${12354981}`, {
-            deckId
+        const gameId = this.props.history.location.state.gameId;
+        if(gameId){
+            history.push(`/game/${gameId}`, {
+                deckId
+            });
+            return;
+        }
+        Meteor.call('games.create', (err, game)=>{
+            console.log(game, err);
+            history.push(`/game/${game}`, {
+                deckId
+            });
         });
+        
     }
     renderDecks = () => {
-        if(this.state.decks.length === 0){
-            this.setState({
-                decks: [
-                    {_id:'01', name:'Deck1'},
-                    {_id:'02', name:'Deck2'},
-                    {_id:'03', name:'Deck3'},
-                    {_id:'04', name:'Deck69'},
-                    {_id:'05', name:'Deck4'},
-                    {_id:'06', name:'Deck5'},
-                ]
-            });
-        }
         return this.state.decks.map((deck) =>(
             <List.Item key={deck._id}>
                 <List.Content onClick={()=>this.chooseDeck(deck._id)}>

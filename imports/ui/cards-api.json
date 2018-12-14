@@ -1,0 +1,88 @@
+{
+    "_id": "xN54i6J8nG4wxmMbA",
+    "name": "My First deck",
+    "cards": [
+        {
+            "_id": "zLYJyYGuQkypiYH45",
+            "name": "Civil Engineer",
+            "imageUrl": "",
+            "classType": "Engineer",
+            "description": "A concrete fanatic.",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "7j5athqagpsG8iZuq",
+            "name": "Software Engineer",
+            "imageUrl": "",
+            "classType": "Engineer",
+            "description": "Hello World!",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "6nitENLFABYrZKkcK",
+            "name": "Electrical Engineer",
+            "imageUrl": "",
+            "classType": "Engineer",
+            "description": "ZaZ",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "2BADXJ5h8WW7wcB83",
+            "name": "Mechanical Engineer",
+            "imageUrl": "",
+            "classType": "Engineer",
+            "description": "Big metal Fan!",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "rzbhMGdFP7KPJdE2f",
+            "name": "Zombie girl",
+            "imageUrl": "",
+            "classType": "Zombie",
+            "description": "Guuuurrrrl",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "yb7kLLW83YWsmFnoD",
+            "name": "Zombie boy",
+            "imageUrl": "",
+            "classType": "Zombie",
+            "description": "Boooooooy",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "3SKK3nDdx8CtygG95",
+            "name": "Meta OneCord",
+            "imageUrl": "",
+            "classType": "Unicorn",
+            "description": "Meta meta",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "AfEWBHQePcGvmi8yN",
+            "name": "Zomby",
+            "imageUrl": "",
+            "classType": "Zombie",
+            "description": "Zommmmmbyyyy",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        },
+        {
+            "_id": "mhjpGKbXwzZZd3yyA",
+            "name": "Unycorn",
+            "imageUrl": "",
+            "classType": "Unicorn",
+            "description": "Uny",
+            "trade": false,
+            "owner": "eqpWnpqiobhrqBbLE"
+        }
+    ],
+    "owner": "eqpWnpqiobhrqBbLE"
+}

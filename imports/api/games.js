@@ -14,12 +14,14 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('not-authorized');
         }
-        Games.insert({
+        return Games.insert({
             playerOne: this.userId,
             playerTwo: '',
-            turnOne: 0,
-            tuneTwo: 0,
-            turnThree: 0
+            playerOneCards:[],
+            playerTwoCards:[]
         });
+    },
+    'games.list' () {
+        return Games.find({});
     }
 });
