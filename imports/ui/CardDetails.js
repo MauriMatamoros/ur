@@ -2,6 +2,9 @@ import { Dimmer, Loader, Image, Message, Card, Button, Icon } from 'semantic-ui-
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 
+import web3 from '../ethereum/web3';
+import CardInstance from '../ethereum/card';
+import factory from '../ethereum/factory';
 import Layout from './Layout';
 
 export default class CardDetails extends React.Component {
@@ -10,10 +13,13 @@ export default class CardDetails extends React.Component {
         buttonLoading: false,
         loading: true,
         errorMessage: '',
-        successMessage: ''
+        successMessage: '',
+        address: ''
     }
-    componentDidMount() {
+    componentDidMount = async () => {
         const { id } = this.props.match.params;
+        const address = await factory.methods.getCardAddress(id).call();
+        this.setState({ address });
         Meteor.call('cards.details', id, (error, result) => {
             if (error) {
                 this.setState({ errorMessage: error.message });
@@ -25,14 +31,27 @@ export default class CardDetails extends React.Component {
     }
     buyCard = () => {
         this.setState({ buttonLoading: true })
-        Meteor.call('cards.buy', this.state.card._id, (error, result) => {
+        Meteor.call('cards.buy', this.state.card._id, async (error, result) => {
             if (result === 0) {
                 this.setState({ errorMessage: 'The transaction could not go through' });
             } else {
-                this.setState({ 
-                    successMessage: 'You bought the card!',
-                    buttonLoading: false
-                });
+                const accounts = await web3.eth.getAccounts();
+                const card = CardInstance(this.state.address);
+                const userId = await Meteor.userId();
+                try {
+                    await card.methods
+                        .buy(userId)
+                        .send({
+                            from: accounts[0]
+                        });
+                    this.setState({ 
+                        successMessage: 'You bought the card!',
+                        buttonLoading: false
+                    });
+                } catch (error) {
+                    await Meteor.call('cards.removeOwner', this.state.card._id);
+                    this.setState({ errorMessage: error.message });
+                }
             }
         });
     }

@@ -22,7 +22,7 @@ Meteor.methods({
         if (!Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized');
         }
-        Cards.insert({
+        const card = Cards.insert({
             name,
             imageUrl,
             classType,
@@ -31,6 +31,19 @@ Meteor.methods({
             trade: false,
             owner: null
         });
+        return card;
+    },
+    'cards.remove'(_id) {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+        if (!Roles.userIsInRole(this.userId, 'admin')) {
+            throw new Meteor.Error('not-authorized');
+        }
+        Cards.remove({_id});
+    },
+    'cards.removeOwner'(_id) {
+        Cards.update({ _id }, { $set: {owner: null, trade: false }});
     },
     'cards.total'() {
         return Cards.find({}).count();

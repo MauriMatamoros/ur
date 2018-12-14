@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Button, Form, Modal, Message, Table, Pagination, Grid } from 'semantic-ui-react';
 
+import web3 from '../ethereum/web3';
+import factory from '../ethereum/factory';
 import { Cards } from '../api/cards';
 import CardRow from './CardRow';
 import Layout from './Layout';
@@ -19,10 +21,10 @@ export default class CardsList extends React.Component{
         errorMessage: '',
         loading: false,
         activePage: 1,
-        totalPages: 0,
+        totalPages: 0
     }
     handlePaginationChange = (e, { activePage }) => { 
-        const cards = Cards.find({}, { skip: 2 * (activePage - 1), limit: 2 }).fetch();
+        const cards = Cards.find({}, { skip: 10 * (activePage - 1), limit: 10 }).fetch();
         this.setState({ activePage, cards }) 
     };
     handleOpen = () => this.setState({ modalOpen: true });
@@ -40,17 +42,28 @@ export default class CardsList extends React.Component{
             classType, 
             description
         };
-        Meteor.call('cards.insert', card, (error, res) => {
+        await Meteor.call('cards.insert', card, async (error, res) => {
             if (error) {
                 this.setState({
                     loading: false,
                     errorMessage: error.message
                 });
             } else {
+                const accounts = await web3.eth.getAccounts();
+                try {
+                    await factory.methods
+                        .createCard(1, res)
+                        .send({
+                            from: accounts[0]
+                        });
+                } catch (error) {
+                    await Meteor.call('cards.remove', res);
+                    this.setState({ errorMessage: error.message });
+                }
                 this.setState({ loading: false });
                 this.handleClose();
             }
-        })
+        });
         this.setState({
             name: '',
             imageUrl: '',
