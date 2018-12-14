@@ -14,6 +14,8 @@ import Trade from '../ui/Trade';
 import DeckCreator from '../ui/DeckCreator';
 import DeckDetails from '../ui/DeckDetails';
 import GamesList from '../ui/GamesList';
+import Board from '../ui/Board';
+import DeckSelector from '../ui/DeckSelector';
 
 export const history = createBrowserHistory();
 
@@ -46,6 +48,8 @@ export const routes = (
             <Route exact path='/deckCreator' component={DeckCreator} onEnter={privatePage}/>
             <Route exact path='/deck/:id/details' component={DeckDetails} onEnter={privatePage}/>
             <Route exact path='/games' component={GamesList} onEnter={privatePage}/>
+            <Route exact path='/game/:id' component={Board} onEnter={privatePage}/>
+            <Route exact path='/gameCreator' component={DeckSelector} onEnter={privatePage}/>
         </Switch>
     </Router>
 );

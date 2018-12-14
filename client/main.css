@@ -2,3 +2,13 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+
+.ur-card {
+  width: 200px;
+  height: 200px;
+  background-color: rgba(0, 126, 67, 0.24);
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
