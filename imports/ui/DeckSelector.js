@@ -55,7 +55,7 @@ export default class DeckSelector extends React.Component {
         return this.state.decks.map((deck) =>(
             <List.Item key={deck._id}>
                 <List.Content onClick={()=>this.chooseDeck(deck._id)}>
-                    <List.Header>{deck.name}</List.Header>
+                    <List.Header>{deck.name || '--No name--'}</List.Header>
                 </List.Content>
             </List.Item>
         ));
