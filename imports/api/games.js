@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
+import { Cards } from './cards';
+
 export const Games = new Mongo.Collection('game');
 
 if (Meteor.isServer) {
@@ -62,7 +64,7 @@ Meteor.methods({
                 _id:id
             },{
                 $set:{
-                    playerOneCards:cardId
+                    playerOneCards: Cards.findOne(cardId)
                 }
             });
         }else{
@@ -70,7 +72,7 @@ Meteor.methods({
                 _id:id
             },{
                 $set:{
-                    playerTwoCards: cardId
+                    playerTwoCards: Cards.findOne(cardId)
                 }
             });
         }
