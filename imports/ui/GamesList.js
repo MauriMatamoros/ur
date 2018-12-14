@@ -36,12 +36,17 @@ export default class GamesList extends React.Component {
             </List.Item>
         ));
     }
+    createGame = () => {
+        history.push("/gameCreator", {
+            gameId: undefined
+        });
+    }
     render() {
         return (
             <Layout>
                 <Grid>
                     <Grid.Row centered>
-                        <Button primary onClick={() => history.push("/gameCreator")}>Create Game</Button>
+                        <Button primary onClick={() => this.createGame()}>Create Game</Button>
                         <List selection verticalAlign='middle'>
                             {this.renderGames()}
                         </List>

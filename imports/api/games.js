@@ -6,6 +6,9 @@ export const Games = new Mongo.Collection('game');
 if (Meteor.isServer) {
     Meteor.publish('games', () => {
         return Games.find({});
+    });
+    Meteor.publish('game', (_id) => {
+        return Games.findOne({_id});
     })
 }
 
