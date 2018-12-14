@@ -76,6 +76,18 @@ Meteor.methods({
         }
         Games.save(game);
     },
+    'games.playerNum'(){
+        const game = Games.findOne({
+            _id:id,
+        });
+        if(game.playerOne === this.userId){
+            return 1;
+        }
+        if(game.playerTwo === this.userId){
+            return 2;
+        }
+        return 0;
+    },
     'games.list' () {
         return Games.find({});
     }

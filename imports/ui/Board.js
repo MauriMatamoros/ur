@@ -12,8 +12,8 @@ export default class Board extends React.Component {
     state = {
         playerOne: '',
         playerTwo: '',
-        playerOneCards:[],
-        playerTwoCards:[]
+        playerOneCards:'',
+        playerTwoCards:''
     }
     componentWillMount(){
         console.log(this.props);
@@ -47,8 +47,7 @@ export default class Board extends React.Component {
             <Layout>
                 <pre>{JSON.stringify({ playerOne, playerTwo, playerOneCards, playerTwoCards},null,2)}</pre>
                 <OtherHand></OtherHand>
-                <OtherPlayedCard></OtherPlayedCard>
-                <PlayedCard></PlayedCard>
+                <PlayedCard playerCards={[playerOneCards, playerTwoCards]}></PlayedCard>
                 <Hand gameId={this.props.match.params.id} deckId={this.props.history.location.state.deckId}></Hand>
             </Layout>
         );
