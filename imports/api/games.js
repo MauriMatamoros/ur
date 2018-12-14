@@ -20,8 +20,8 @@ Meteor.methods({
         return Games.insert({
             playerOne: this.userId,
             playerTwo: '',
-            playerOneCards:[],
-            playerTwoCards:[]
+            playerOneCards:'',
+            playerTwoCards:''
         });
     },
     'games.join'(id){
@@ -58,19 +58,21 @@ Meteor.methods({
             _id:id,
         });
         if(game.playerOne === this.userId){
+            game.playerOneCards.push(cardId);
             return Games.update({
                 _id:id
             },{
-                $push:{
-                    playerOneCards: cardId
+                $set:{
+                    playerOneCards:cardId
                 }
             });
         }else{
+            game.playerTwoCards.push(cardId);
             Games.update({
                 _id:id
             },{
                 $push:{
-                    playerOneCards: cardId
+                    playerTwoCards: cardId
                 }
             });
         }
