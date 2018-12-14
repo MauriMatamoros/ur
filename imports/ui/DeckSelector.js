@@ -1,9 +1,8 @@
 import React from 'react';
-import { Grid, Card, Dimmer, Loader } from 'semantic-ui-react';
-
+import { Grid, List, Dimmer, Loader } from 'semantic-ui-react';
+import { history } from '../routes/routes';
 import Layout from './Layout';
 import { Decks } from '../api/decks';
-
 
 export default class DeckSelector extends React.Component {
     state = {
@@ -24,10 +23,32 @@ export default class DeckSelector extends React.Component {
     componentWillUnmount() {
         this.tracker.stop();
     }
+    chooseDeck(deckId) {
+        console.log(deckId);
+        history.push(`/game/${12354981}`, {
+            deckId
+        });
+    }
     renderDecks = () => {
-        if (this.state.decks) {
-            return this.state.decks.map((deck) => <Card.Description key={deck._id}>{deck.name}</Card.Description>);
+        if(this.state.decks.length === 0){
+            this.setState({
+                decks: [
+                    {_id:'01', name:'Deck1'},
+                    {_id:'02', name:'Deck2'},
+                    {_id:'03', name:'Deck3'},
+                    {_id:'04', name:'Deck69'},
+                    {_id:'05', name:'Deck4'},
+                    {_id:'06', name:'Deck5'},
+                ]
+            });
         }
+        return this.state.decks.map((deck) =>(
+            <List.Item key={deck._id}>
+                <List.Content onClick={()=>this.chooseDeck(deck._id)}>
+                    <List.Header>{deck.name}</List.Header>
+                </List.Content>
+            </List.Item>
+        ));
     }
     render() {
         return (
@@ -37,12 +58,9 @@ export default class DeckSelector extends React.Component {
                         <Loader></Loader>
                     </Dimmer>
                     <Grid.Row centered>
-                    <Card>
-                        <Card.Content>
-                        <Card.Header>Your decks:</Card.Header>
+                    <List selection verticalAlign='middle'>
                         {this.renderDecks()}
-                        </Card.Content>
-                    </Card>
+                    </List>
                     </Grid.Row>
                 </Grid>
             </Layout>
